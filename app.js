@@ -42,7 +42,8 @@
 
     list.searchItems = function () {
 
-      if (list.textToSearch.length == 0) {
+      if (!list.textToSearch) {
+        list.found = [];
         list.isListEmpty = true;
         return;
       }

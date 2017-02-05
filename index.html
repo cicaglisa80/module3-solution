@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" ng-app="NarrowItDownApp">
   <head>
-    <title>Shopping List Check Off</title>
+    <title>Narrow It Down For Me!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles/bootstrap.min.css">
     <script src="angular.min.js"></script>
@@ -26,20 +26,19 @@
   </head>
 <body>
   <div class="container">
-  <h1>Shopping List Check Off</h1>
 
-  <div class="row" id="list" ng-controller='NarrowItDownController as list'>
+    <div class="row" id="list" ng-controller='NarrowItDownController as list'>
 
-    <input type="text" ng-model="list.textToSearch" placeholder="text to search">
-    <button ng-click="list.searchItems();">Search Items</button>
-    <br/><br/>
-    <found-items
-        id="foundList"
-        items="list.found"
-        on-remove="list.removeItem(index)"></found-items>
+      <input type="text" ng-model="list.textToSearch" placeholder="text to search">
+      <button ng-click="list.searchItems();">Search Items</button>
+      <br/><br/>
+      <found-items
+          id="foundList"
+          items="list.found"
+          on-remove="list.removeItem(index)"></found-items>
 
+    </div>
   </div>
-</div>
 
 </body>
 </html>

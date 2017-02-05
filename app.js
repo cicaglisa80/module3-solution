@@ -14,16 +14,9 @@
 
     list.searchItems = function () {
 
-      var promise = MenuSearchService.getMatchedMenuItems(list.textToSearch);
-
-      promise.then(function (response) {
-          list.found = response;
-          console.log('response.data ', list.found);
-        })
-        .catch(function (error) {
-          console.log("Something went terribly wrong.");
-        });
-     };
+    list.found = MenuSearchService.getMatchedMenuItems(list.textToSearch);
+      console.log('response.data ', list.found);
+    };
 
      list.removeItem = function (itemIndex) {
        MenuSearchService.removeItem(itemIndex);

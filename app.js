@@ -62,7 +62,7 @@ function MenuSearchService($http, ApiBasePath) {
          }
        })
        .then(function (result) {
-
+         foundItems = [];
          for (var i = 0; i < result.data.menu_items.length; i++) {
            if (~result.data.menu_items[i].description.indexOf(searchTerm))
            {

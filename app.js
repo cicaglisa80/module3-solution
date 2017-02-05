@@ -24,18 +24,32 @@
 
   function FoundItemsDirectiveController() {
     var list = this;
+
+    list.itemsInList = function () {
+      if (list.items.length > 0) {
+        return true;
+      }
+
+      return false;
+    };
   }
 
   NarrowItDownController.$inject = ['MenuSearchService'];
   function NarrowItDownController(MenuSearchService) {
     var list = this;
     list.found = [];
+    list.isListEmpty = false;
 
     list.searchItems = function () {
       var promise = MenuSearchService.getMatchedMenuItems(list.textToSearch);
 
       promise.then(function (response) {
           list.found = response.data.menu_items;
+          if (list.found > 0) {
+            list.isListEmpty = false;
+          } else {
+            list.isListEmpty = true;
+          }
         })
         .catch(function (error) {
           console.log(error);

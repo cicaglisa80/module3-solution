@@ -38,6 +38,7 @@
         items="list.found"
         on-remove="list.removeItem(index)"></found-items>
 
+    <div class="error" ng-if="list.isListEmpty">Nothing found</div>
   </div>
 </div>
 

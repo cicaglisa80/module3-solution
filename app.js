@@ -7,32 +7,44 @@
   .directive('foundItems', FoundItemsDirective)
   .constant('ApiBasePath', "https://davids-restaurant.herokuapp.com/");
 
+  function FoundItemsDirective() {
+    var ddo = {
+      templateUrl: 'foundItems.html',
+      scope: {
+        items: '<',
+        onRemove: '&'
+      },
+      controller: FoundItemsDirectiveController,
+      controllerAs: 'list',
+      bindToController: true
+    };
+
+    return ddo;
+  }
+
+  function FoundItemsDirectiveController() {
+    var list = this;
+  }
+
   NarrowItDownController.$inject = ['MenuSearchService'];
   function NarrowItDownController(MenuSearchService) {
     var list = this;
     list.found = [];
 
     list.searchItems = function () {
+      var promise = MenuSearchService.getMatchedMenuItems(list.textToSearch);
 
-    list.found = MenuSearchService.getMatchedMenuItems(list.textToSearch);
-      console.log('response.data ', list.found);
-    };
+      promise.then(function (response) {
+          list.found = response.data.menu_items;
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+      };
 
      list.removeItem = function (itemIndex) {
-       MenuSearchService.removeItem(itemIndex);
+       list.found.splice(itemIndex, 1);
      };
-  }
-
-  function FoundItemsDirective() {
-    var ddo = {
-      templateUrl: 'foundItems.html',
-      scope: {
-        found: '<',
-        onRemove: '&'
-      }
-    };
-
-    return ddo;
   }
 
 MenuSearchService.$inject = ['$http', 'ApiBasePath'];
@@ -42,15 +54,15 @@ function MenuSearchService($http, ApiBasePath) {
     var foundItems = [];
 
     service.getMatchedMenuItems = function (searchTerm) {
-       return $http({
+       var response = $http({
          method: "GET",
          url: (ApiBasePath + "/menu_items.json"),
          params: {
            description: searchTerm
          }
-       }).then(function (result) {
+       })
+       .then(function (result) {
 
-         console.log('result ', result);
          for (var i = 0; i < result.data.menu_items.length; i++) {
            if (~result.data.menu_items[i].description.indexOf(searchTerm))
            {
@@ -58,13 +70,11 @@ function MenuSearchService($http, ApiBasePath) {
            }
          }
 
-         console.log('foundItems total: ', foundItems.length);
-         return foundItems;
+         result.data.menu_items = foundItems;
+         return result;
        });
-    }
 
-    service.removeItem = function (itemIndex) {
-      foundItems.splice(itemIndex, 1);
-    };
+       return response;
+    }
   }
 })();

@@ -41,6 +41,12 @@
     list.isListEmpty = false;
 
     list.searchItems = function () {
+
+      if (list.textToSearch.length == 0) {
+        list.isListEmpty = true;
+        return;
+      }
+
       var promise = MenuSearchService.getMatchedMenuItems(list.textToSearch);
 
       promise.then(function (response) {
